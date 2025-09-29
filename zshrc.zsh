@@ -2,6 +2,13 @@
 # Yamakuzuryu ZSH Aliases, Functions, Plugins and Configuration #
 #===============================================================#
 
+# Python
+if [ -d $HOME/.pyenv ]; then
+	export PYENV_ROOT="$HOME/.pyenv"
+	[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+	eval "$(pyenv init - zsh)"
+fi
+
 # NVM
 export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
@@ -17,11 +24,6 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # Windsurf
 export PATH="/Users/mbohman/.codeium/windsurf/bin:$PATH"
-
-# Python
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init - zsh)"
 
 # Alias
 source $HOME/.zshrc-alias
@@ -39,5 +41,5 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 # Private
 if [ -f $HOME/.zshrc-private ]; then
-  source $HOME/.zshrc-private
+	source $HOME/.zshrc-private
 fi
