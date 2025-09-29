@@ -2,6 +2,10 @@
 # Yamakuzuryu ZSH Aliases #
 #=========================#
 
+# Directories
+alias dir.icloudDrive='cd ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/'
+alias dir.googleDrive='cd ~/Google\ Drive/My\ Drive/'
+
 # Yarn
 alias y.i='yarn install'
 alias y.c='yarn cache clean'
@@ -35,7 +39,8 @@ alias g.dt.staged='git difftool --staged'
 alias g.f='git fetch --all --prune'
 
 alias g.m='git merge'
-alias g.mm='g.f && g.m origin/master'
+alias g.mm='g.f && g.m origin/main'
+alias g.mmm='g.f && g.m origin/master'
 alias g.mt='git mergetool'
 
 alias g.mv='git mv' # move files and keep history
@@ -49,6 +54,7 @@ alias g.s='git status'
 alias g.rm='git rm -r' # recursively removes files from the working tree and from the index
 
 alias g.reset='git reset --hard'
+alias g.reset.main='git reset --hard origin/main'
 alias g.reset.master='git reset --hard origin/master'
 
 ## Git Misc
