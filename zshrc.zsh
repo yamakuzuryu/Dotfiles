@@ -22,9 +22,6 @@ export NODE_OPTIONS=--max-old-space-size=8192
 # Yarn
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
-# Windsurf
-export PATH="/Users/mbohman/.codeium/windsurf/bin:$PATH"
-
 # Alias
 source $HOME/.zshrc-alias
 

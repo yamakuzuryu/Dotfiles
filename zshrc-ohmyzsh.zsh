@@ -11,7 +11,8 @@ export ZSH=$HOME/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="miloshadzic"
+# ZSH_THEME="miloshadzic"
+ZSH_THEME=""
 
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
@@ -109,3 +110,6 @@ source $ZSH/oh-my-zsh.sh
 # Then you can run ulimit -a  to load the new setting. Should work (if you increase the number of open files allowed, but not the memory, you will run into memory issues).
 # If it doesn't work, you may have to restart...
 #you can run ulimit -n  to see if your open file limit was updated.
+
+# Initialize Starship
+eval "$(starship init zsh)"

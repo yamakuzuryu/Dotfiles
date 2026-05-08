@@ -57,6 +57,15 @@ alias g.reset='git reset --hard'
 alias g.reset.main='git reset --hard origin/main'
 alias g.reset.master='git reset --hard origin/master'
 
+alias g.wt.list='git worktree list'
+alias g.wt.add='git worktree add'
+alias g.wt.remove='git worktree remove'
+alias g.wt.prune='git worktree prune'
+alias g.wt.prune.all='git worktree prune --all'
+alias g.wt.prune.all.force='git worktree prune --all --force'
+alias g.wt.prune.all.force.all='git worktree prune --all --force --all'
+alias g.wt.prune.all.force.all.force='git worktree prune --all --force --all --force'
+
 ## Git Misc
 alias g.cherry='git cherry-pick' # cherry pick a commit to another branch
 
