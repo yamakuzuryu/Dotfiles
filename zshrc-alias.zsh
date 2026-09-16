@@ -28,10 +28,12 @@ alias g.br.deleteMergedRemote='git branch -r --merged origin/master | grep mbohm
 alias g.ch='git checkout' # switch branch
 
 alias g.co='git commit -a' # stages files for commit
+alias g.co.merge='git commit -a --no-verify' # stages files for commit without running pre-commit hooks
 alias g.co.message='git commit -am' # stages files for commit with message
 alias g.co.amend='git commit --amend --reuse-message=HEAD'
 
 alias g.d='git diff'
+alias g.d.owners='git diff origin/HEAD...HEAD --name-only'
 alias g.dt='git difftool .'
 alias g.dt.committed='git difftool origin `git_current_branch`..HEAD'
 alias g.dt.staged='git difftool --staged'
@@ -39,8 +41,7 @@ alias g.dt.staged='git difftool --staged'
 alias g.f='git fetch --all --prune'
 
 alias g.m='git merge'
-alias g.mm='g.f && g.m origin/main'
-alias g.mmm='g.f && g.m origin/master'
+alias g.mm='g.f && g.m origin/HEAD'
 alias g.mt='git mergetool'
 
 alias g.mv='git mv' # move files and keep history
@@ -54,8 +55,7 @@ alias g.s='git status'
 alias g.rm='git rm -r' # recursively removes files from the working tree and from the index
 
 alias g.reset='git reset --hard'
-alias g.reset.main='git reset --hard origin/main'
-alias g.reset.master='git reset --hard origin/master'
+alias g.reset.origin='git reset --hard origin/HEAD'
 
 alias g.wt.list='git worktree list'
 alias g.wt.add='git worktree add'
