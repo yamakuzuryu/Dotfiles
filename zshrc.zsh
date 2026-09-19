@@ -2,6 +2,14 @@
 # Yamakuzuryu ZSH Aliases, Functions, Plugins and Configuration #
 #===============================================================#
 
+# Homebrew
+export PATH=/opt/homebrew/bin:$PATH
+export HOMEBREW_NO_AUTO_UPDATE=1
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Starship
+eval "$(starship init zsh)"
+
 # Python
 if [ -d $HOME/.pyenv ]; then
 	export PYENV_ROOT="$HOME/.pyenv"
@@ -25,18 +33,13 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 # Alias
 source $HOME/.zshrc-alias
 
-# ZSH Plugins
-# source $HOMEBREW_PREFIX/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-# source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-# source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# Oh My ZSH
-source $HOME/.zshrc-ohmyzsh
-
-# iTerm2 Shell Integration
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
 # Private
 if [ -f $HOME/.zshrc-private ]; then
 	source $HOME/.zshrc-private
 fi
+
+# ZSH Options
+setopt AUTO_CD
+
+# ZSH Plugins
+source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
