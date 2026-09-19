@@ -4,6 +4,7 @@
 
 # Directories
 alias dir.icloudDrive='cd ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/'
+alias dir.icloudDrive.dots='cd ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/Dotfiles'
 alias dir.googleDrive='cd ~/Google\ Drive/My\ Drive/'
 
 # Yarn
