@@ -2,10 +2,14 @@
 # Yamakuzuryu ZSH Aliases #
 #=========================#
 
+# Variables
+DIR_APPLE_DRIVE="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
+DIR_GOOGLE_DRIVE="$HOME/Google Drive/My Drive"
+
 # Directories
-alias dir.icloudDrive='cd ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/'
-alias dir.icloudDrive.dots='cd ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/Dotfiles'
-alias dir.googleDrive='cd ~/Google\ Drive/My\ Drive/'
+alias dir.appleDrive='cd "$DIR_APPLE_DRIVE"'
+alias dir.appleDrive.dots='cd "$DIR_APPLE_DRIVE"/Dotfiles'
+alias dir.googleDrive='cd "$DIR_GOOGLE_DRIVE"'
 
 # Yarn
 alias y.i='yarn install'
