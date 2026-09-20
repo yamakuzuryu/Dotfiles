@@ -3,13 +3,13 @@
 #=========================#
 
 # Variables
-DIR_APPLE_DRIVE="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
-DIR_GOOGLE_DRIVE="$HOME/Google Drive/My Drive"
+DIR_APPLE_CLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
+DIR_GOOGLE_CLOUD="$HOME/Google Drive/My Drive"
 
 # Directories
-alias dir.appleDrive='cd "$DIR_APPLE_DRIVE"'
-alias dir.appleDrive.dots='cd "$DIR_APPLE_DRIVE"/Dotfiles'
-alias dir.googleDrive='cd "$DIR_GOOGLE_DRIVE"'
+alias dir.appleCloud='cd "$DIR_APPLE_CLOUD"'
+alias dir.appleCloud.dots='cd "$DIR_APPLE_CLOUD"/Dotfiles'
+alias dir.googleCloud='cd "$DIR_GOOGLE_CLOUD"'
 
 # Yarn
 alias y.i='yarn install'
