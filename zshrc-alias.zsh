@@ -25,10 +25,38 @@ alias g.br='git branch' # list local branches or create a new branch
 alias g.br.all='git branch -a' # list all branches
 alias g.br.create='git checkout -b' # create new branch and switch to it
 alias g.br.delete='git branch -d' # delete local branch
-alias g.br.deleteForce='git branch -D' # delete local branch by force
-alias g.br.deleteRemote='git push origin -d' # delete remote branch
-alias g.br.deleteMerged='git branch --merged master | grep -v "master" | xargs git branch -D' # delete merged local branches
-alias g.br.deleteMergedRemote='git branch -r --merged origin/master | grep mbohman | cut -d"/" -f 2-| xargs -pL1 git push origin --delete' # delete merged remote branches
+alias g.br.delete-force='git branch -D' # delete local branch by force
+
+# Delete local branches already contained in a base ref.
+# Usage: g.br.delete-merged [origin/HEAD|main|master]
+g.br.delete-merged() {
+	local base="${1:-origin/HEAD}"
+	local short current name
+	local -a victims
+
+	git rev-parse --verify --quiet "${base}^{commit}" >/dev/null || {
+		print -u2 "base ref not found: $base (try: g.f)"
+		return 1
+	}
+
+	short=$(git rev-parse --abbrev-ref "$base")
+	short=${short#origin/}
+	current=$(git branch --show-current)
+
+	while IFS= read -r name; do
+		[[ -z $name || $name == "$current" || $name == "$short" ]] && continue
+		victims+=("$name")
+	done < <(git branch --merged "$base" --format='%(refname:short)')
+
+	if (( ${#victims} == 0 )); then
+		print "No branches merged into $base."
+		return 0
+	fi
+
+	print "Deleting branches merged into $base:"
+	print -l "${victims[@]}"
+	git branch -D "${victims[@]}"
+}
 
 alias g.ch='git checkout' # switch branch
 
@@ -64,12 +92,100 @@ alias g.reset.origin='git reset --hard origin/HEAD'
 
 alias g.wt.list='git worktree list'
 alias g.wt.add='git worktree add'
-alias g.wt.remove='git worktree remove'
+alias g.wt.delete='git worktree remove'
+alias g.wt.delete.force='git worktree remove --force --force'
 alias g.wt.prune='git worktree prune'
-alias g.wt.prune.all='git worktree prune --all'
-alias g.wt.prune.all.force='git worktree prune --all --force'
-alias g.wt.prune.all.force.all='git worktree prune --all --force --all'
-alias g.wt.prune.all.force.all.force='git worktree prune --all --force --all --force'
+alias g.wt.prune.now='git worktree prune --expire now -v'
+
+# Delete linked worktrees whose branch is already merged into a base ref.
+# Usage: g.wt.delete-merged [origin/HEAD|main|master]
+g.wt.delete-merged() {
+	local base="${1:-origin/HEAD}"
+	local short main current line wt="" head="" branch="" name
+	local -a remove
+	local -A merged
+	local b
+
+	git rev-parse --verify --quiet "${base}^{commit}" >/dev/null || {
+		print -u2 "base ref not found: $base (try: g.f)"
+		return 1
+	}
+
+	short=$(git rev-parse --abbrev-ref "$base")
+	short=${short#origin/}
+
+	while IFS= read -r b; do
+		[[ -n $b ]] && merged[$b]=1
+	done < <(git branch --merged "$base" --format='%(refname:short)')
+
+	main=$(git worktree list --porcelain | awk '/^worktree / { sub(/^worktree /, ""); print; exit }')
+	current=$(git rev-parse --show-toplevel)
+
+	while IFS= read -r line || [[ -n $line ]]; do
+		if [[ -n $line ]]; then
+			case $line in
+				'worktree '*) wt=${line#worktree } ;;
+				'HEAD '*) head=${line#HEAD } ;;
+				'branch '*) branch=${line#branch } ;;
+				detached) branch="" ;;
+			esac
+			continue
+		fi
+
+		if [[ -n $wt && $wt != $main && $wt != $current ]]; then
+			if [[ -n $branch ]]; then
+				name=${branch#refs/heads/}
+				if [[ $name != "$short" && $name != "$base" && -n ${merged[$name]} ]]; then
+					remove+=("$wt")
+				fi
+			elif [[ -n $head ]] && git merge-base --is-ancestor "$head" "$base"; then
+				remove+=("$wt")
+			fi
+		fi
+		wt="" head="" branch=""
+	done < <(git worktree list --porcelain)
+
+	if (( ${#remove} == 0 )); then
+		print "No merged worktrees to remove."
+		return 0
+	fi
+
+	local p
+	for p in "${remove[@]}"; do
+		print "Removing $p"
+		git worktree remove "$p" || print -u2 "Left in place (dirty, locked, or has submodules): $p"
+	done
+}
+
+# Delete every linked worktree, including dirty and locked ones.
+g.wt.delete-all-force() {
+	local main current line wt=""
+	local -a remove
+
+	main=$(git worktree list --porcelain | awk '/^worktree / { sub(/^worktree /, ""); print; exit }')
+	current=$(git rev-parse --show-toplevel)
+
+	while IFS= read -r line || [[ -n $line ]]; do
+		if [[ $line == 'worktree '* ]]; then
+			wt=${line#worktree }
+		elif [[ -z $line && -n $wt ]]; then
+			[[ $wt != $main && $wt != $current ]] && remove+=("$wt")
+			wt=""
+		fi
+	done < <(git worktree list --porcelain)
+
+	if (( ${#remove} == 0 )); then
+		print "No linked worktrees to remove."
+		return 0
+	fi
+
+	print "Force-removing ${#remove} worktree(s). Uncommitted and untracked files in those checkouts will be deleted."
+	local p
+	for p in "${remove[@]}"; do
+		print "Removing $p"
+		git worktree remove --force --force "$p" || print -u2 "Failed: $p"
+	done
+}
 
 ## Git Misc
 alias g.cherry='git cherry-pick' # cherry pick a commit to another branch
