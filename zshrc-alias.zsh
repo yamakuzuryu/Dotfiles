@@ -68,7 +68,7 @@ alias g.co.amend='git commit --amend --reuse-message=HEAD'
 alias g.d='git diff'
 alias g.d.owners='git diff origin/HEAD...HEAD --name-only'
 alias g.dt='git difftool .'
-alias g.dt.committed='git difftool origin `git_current_branch`..HEAD'
+alias g.dt.committed='git difftool origin "$(git branch --show-current)"..HEAD'
 alias g.dt.staged='git difftool --staged'
 
 alias g.f='git fetch --all --prune'
@@ -81,7 +81,7 @@ alias g.mv='git mv' # move files and keep history
 
 alias g.p='git fetch --all --prune && git pull'
 alias g.pu='git push'
-alias g.pub='git push --set-upstream origin `git_current_branch`'
+alias g.pub='git push --set-upstream origin "$(git branch --show-current)"'
 
 alias g.s='git status'
 
